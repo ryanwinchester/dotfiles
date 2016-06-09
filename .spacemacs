@@ -45,7 +45,9 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(
+                                      dumb-jump
+                                      multiple-cursors)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -258,39 +260,20 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-;;;; Fira Code font work-around
-;;   (when (window-system)
-;;     (set-default-font "Fira Code"))
-;;   (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-;;                  (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-;;                  (36 . ".\\(?:>\\)")
-;;                  (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-;;                  (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-;;                  (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-;;                  (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-;;                  (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-;;                  (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-;;                  (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-;;                  (48 . ".\\(?:x[a-zA-Z]\\)")
-;;                  (58 . ".\\(?:::\\|[:=]\\)")
-;;                  (59 . ".\\(?:;;\\|;\\)")
-;;                  (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-;;                  (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-;;                  (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-;;                  (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-;;                  (91 . ".\\(?:]\\)")
-;;                  (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-;;                  (94 . ".\\(?:=\\)")
-;;                  (119 . ".\\(?:ww\\)")
-;;                  (123 . ".\\(?:-\\)")
-;;                  (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-;;                  (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-;;                  )
-;;                ))
-;;     (dolist (char-regexp alist)
-;;       (set-char-table-range composition-function-table (car char-regexp)
-;;                             `([,(cdr char-regexp) 0 font-shape-gstring]))))
-;;
+  (dumb-jump-mode)
+  ;; Short-term dumb-jump hack
+  (add-to-list 'dumb-jump-language-contexts
+               '(:language "php" :type "function" :right "^(" :left nil))
+  ;; Multiple Cursors!
+  ;; To get out of multiple-cursors-mode, press <return> or C-g
+  ;; The latter will first disable multiple regions before disabling multiple cursors.
+  ;; If you want to insert a newline in multiple-cursors-mode, use C-j.
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  ;; When you have an active region that spans multiple lines,
+  ;; the following will add a cursor to each line:
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
